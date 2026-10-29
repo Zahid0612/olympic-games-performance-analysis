@@ -1,0 +1,553 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<workbook source-build='2024.1.0' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AccessibleZoneTabOrder />
+    <IntuitiveSorting />
+    <MapboxVectorStylesAndLayers />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='Olympic Games and Medal Results' inline='true' name='federated.medal_analysis' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='medal_results' name='textscan.medal_results'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='medal_results.csv' password='' server='' />
+          </named-connection>
+          <named-connection caption='games_summary' name='textscan.games_summary'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='games_summary.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.medal_results' name='medal_results.csv' table='[medal_results#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='integer' name='year' ordinal='0' />
+            <column datatype='string' name='host_city' ordinal='1' />
+            <column datatype='string' name='host_country' ordinal='2' />
+            <column datatype='string' name='season' ordinal='3' />
+            <column datatype='string' name='country' ordinal='4' />
+            <column datatype='string' name='noc_code' ordinal='5' />
+            <column datatype='string' name='region' ordinal='6' />
+            <column datatype='string' name='gdp_tier' ordinal='7' />
+            <column datatype='integer' name='population_million' ordinal='8' />
+            <column datatype='string' name='sports_investment' ordinal='9' />
+            <column datatype='integer' name='athletes_sent' ordinal='10' />
+            <column datatype='integer' name='gold' ordinal='11' />
+            <column datatype='integer' name='silver' ordinal='12' />
+            <column datatype='integer' name='bronze' ordinal='13' />
+            <column datatype='integer' name='total_medals' ordinal='14' />
+            <column datatype='integer' name='medal_points' ordinal='15' />
+            <column datatype='real' name='medal_efficiency_pct' ordinal='16' />
+            <column datatype='string' name='top_sport' ordinal='17' />
+            <column datatype='integer' name='host_nation' ordinal='18' />
+          </columns>
+        </relation>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Country' datatype='string' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
+      <column caption='Host Country' datatype='string' name='[host_country]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
+      <column caption='Host City' datatype='string' name='[host_city]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+      <column caption='NOC Code' datatype='string' name='[noc_code]' role='dimension' type='nominal' />
+      <column caption='Region' datatype='string' name='[region]' role='dimension' type='nominal' />
+      <column caption='Season' datatype='string' name='[season]' role='dimension' type='nominal' />
+      <column caption='Year' datatype='integer' name='[year]' role='dimension' type='ordinal' />
+      <column caption='Gold Medals' datatype='integer' name='[gold]' role='measure' type='quantitative' />
+      <column caption='Silver Medals' datatype='integer' name='[silver]' role='measure' type='quantitative' />
+      <column caption='Bronze Medals' datatype='integer' name='[bronze]' role='measure' type='quantitative' />
+      <column caption='Total Medals' datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+      <column caption='Medal Points' datatype='integer' name='[medal_points]' role='measure' type='quantitative' />
+      <column caption='Medal Efficiency Pct' datatype='real' name='[medal_efficiency_pct]' role='measure' type='quantitative' />
+      <column caption='Athletes Sent' datatype='integer' name='[athletes_sent]' role='measure' type='quantitative' />
+      <column caption='Host Nation Flag' datatype='integer' name='[host_nation]' role='dimension' type='ordinal' />
+      <column caption='Host Nation (Corrected)' datatype='integer' name='[Calculation_HostNation_Fixed]' role='dimension' type='ordinal'>
+        <calculation class='tableau' formula='IF [country] = [host_country] OR ([country] = &quot;Great Britain&quot; AND [host_country] = &quot;United Kingdom&quot;) THEN 1 ELSE 0 END' />
+      </column>
+      <column caption='Games Edition' datatype='string' name='[Calculation_Games_Edition]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='[host_city] + &quot; &quot; + STR([year]) + &quot; (&quot; + [season] + &quot;)&quot;' />
+      </column>
+      <column caption='Weighted Efficiency Ratio' datatype='real' name='[Calculation_Weighted_Efficiency]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='SUM([medal_points]) / SUM([athletes_sent])' />
+      </column>
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.5' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='%null%' />
+      </semantic-values>
+    </datasource>
+
+    <datasource caption='Olympic Athletes' inline='true' name='federated.athletes' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='athletes' name='textscan.athletes'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='athletes.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.athletes' name='athletes.csv' table='[athletes#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='string' name='athlete_id' ordinal='0' />
+            <column datatype='string' name='name' ordinal='1' />
+            <column datatype='string' name='gender' ordinal='2' />
+            <column datatype='integer' name='age_at_peak' ordinal='3' />
+            <column datatype='string' name='country' ordinal='4' />
+            <column datatype='string' name='noc_code' ordinal='5' />
+            <column datatype='string' name='region' ordinal='6' />
+            <column datatype='string' name='sport' ordinal='7' />
+            <column datatype='string' name='sport_category' ordinal='8' />
+            <column datatype='string' name='season' ordinal='9' />
+            <column datatype='integer' name='first_games_year' ordinal='10' />
+            <column datatype='integer' name='last_games_year' ordinal='11' />
+            <column datatype='integer' name='games_participated' ordinal='12' />
+            <column datatype='integer' name='gold_medals' ordinal='13' />
+            <column datatype='integer' name='silver_medals' ordinal='14' />
+            <column datatype='integer' name='bronze_medals' ordinal='15' />
+            <column datatype='integer' name='total_medals' ordinal='16' />
+            <column datatype='integer' name='world_record_holder' ordinal='17' />
+            <column datatype='integer' name='personal_best_rank_world' ordinal='18' />
+            <column datatype='integer' name='height_cm' ordinal='19' />
+            <column datatype='integer' name='weight_kg' ordinal='20' />
+            <column datatype='real' name='bmi' ordinal='21' />
+            <column datatype='integer' name='training_hours_per_week' ordinal='22' />
+            <column datatype='integer' name='professional_athlete' ordinal='23' />
+            <column datatype='integer' name='doping_violation' ordinal='24' />
+            <column datatype='integer' name='most_recent_medal_2020plus' ordinal='25' />
+          </columns>
+        </relation>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Athlete ID' datatype='string' name='[athlete_id]' role='dimension' type='nominal' />
+      <column caption='Name' datatype='string' name='[name]' role='dimension' type='nominal' />
+      <column caption='Country' datatype='string' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
+      <column caption='Sport' datatype='string' name='[sport]' role='dimension' type='nominal' />
+      <column caption='Sport Category' datatype='string' name='[sport_category]' role='dimension' type='nominal' />
+      <column caption='Height (cm)' datatype='integer' name='[height_cm]' role='measure' type='quantitative' />
+      <column caption='Weight (kg)' datatype='integer' name='[weight_kg]' role='measure' type='quantitative' />
+      <column caption='BMI' datatype='real' name='[bmi]' role='measure' type='quantitative' />
+      <column caption='BMI Category' datatype='string' name='[Calculation_BMI_Category]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [bmi] &lt; 18.5 THEN &quot;Underweight&quot; ELSEIF [bmi] &lt; 25.0 THEN &quot;Normal Weight&quot; ELSEIF [bmi] &lt; 30.0 THEN &quot;Overweight&quot; ELSE &quot;Obese&quot; END' />
+      </column>
+      <column caption='Career Longevity Tier' datatype='string' name='[Calculation_Career_Longevity]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF [games_participated] = 1 THEN &quot;1 Edition (Debut)&quot; ELSEIF [games_participated] = 2 THEN &quot;2 Editions (Returning)&quot; ELSE &quot;3+ Editions (Veteran)&quot; END' />
+      </column>
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.5' show-structure='true' />
+    </datasource>
+
+    <datasource caption='All-Time Country Rankings' inline='true' name='federated.alltime_rankings' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='alltime_country_rankings' name='textscan.alltime_country_rankings'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='alltime_country_rankings.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.alltime_country_rankings' name='alltime_country_rankings.csv' table='[alltime_country_rankings#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='string' name='country' ordinal='0' />
+            <column datatype='string' name='noc_code' ordinal='1' />
+            <column datatype='string' name='region' ordinal='2' />
+            <column datatype='integer' name='games_entered' ordinal='3' />
+            <column datatype='integer' name='total_gold' ordinal='4' />
+            <column datatype='integer' name='total_silver' ordinal='5' />
+            <column datatype='integer' name='total_bronze' ordinal='6' />
+            <column datatype='integer' name='total_medals' ordinal='7' />
+            <column datatype='integer' name='total_medal_points' ordinal='8' />
+            <column datatype='real' name='avg_efficiency_pct' ordinal='9' />
+            <column datatype='integer' name='summer_medals' ordinal='10' />
+            <column datatype='integer' name='winter_medals' ordinal='11' />
+            <column datatype='integer' name='overall_rank' ordinal='12' />
+          </columns>
+        </relation>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Country' datatype='string' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
+      <column caption='Overall Rank' datatype='integer' name='[overall_rank]' role='dimension' type='ordinal' />
+      <column caption='All-Time Total Medals' datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+      <column caption='All-Time Total Gold' datatype='integer' name='[total_gold]' role='measure' type='quantitative' />
+      <column caption='All-Time Total Points' datatype='integer' name='[total_medal_points]' role='measure' type='quantitative' />
+    </datasource>
+  </datasources>
+
+  <worksheets>
+    <worksheet name='Olympic Overview KPIs'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <datasource-dependencies datasource='federated.medal_analysis'>
+            <column datatype='integer' name='[gold]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+            <column-instance column='[gold]' derivation='Sum' name='[sum:gold:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[total_medals]' derivation='Sum' name='[sum:total_medals:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows>[federated.medal_analysis].[sum:total_medals:qk]</rows>
+        <cols>[federated.medal_analysis].[sum:gold:qk]</cols>
+      </table>
+      <simple-id uuid='{C107CA39-EB4A-4A13-9C7E-73CE6379B42B}' />
+    </worksheet>
+
+    <worksheet name='Top 10 Countries by Total Medals'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <datasource-dependencies datasource='federated.medal_analysis'>
+            <column datatype='string' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
+            <column datatype='integer' name='[medal_points]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+            <column-instance column='[country]' derivation='None' name='[none:country:nk]' pivot='key' type='nominal' />
+            <column-instance column='[medal_points]' derivation='Sum' name='[sum:medal_points:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[total_medals]' derivation='Sum' name='[sum:total_medals:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.medal_analysis].[sum:medal_points:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.medal_analysis].[none:country:nk]</rows>
+        <cols>[federated.medal_analysis].[sum:total_medals:qk]</cols>
+      </table>
+      <simple-id uuid='{9F1E6171-ECF2-434B-AAAE-62DFE0A0A0A5}' />
+    </worksheet>
+
+    <worksheet name='Medal Distribution (Gold Silver Bronze)'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <datasource-dependencies datasource='federated.medal_analysis'>
+            <column datatype='string' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='nominal' />
+            <column datatype='integer' name='[gold]' role='measure' type='quantitative' />
+            <column-instance column='[country]' derivation='None' name='[none:country:nk]' pivot='key' type='nominal' />
+            <column-instance column='[gold]' derivation='Sum' name='[sum:gold:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+          </pane>
+        </panes>
+        <rows>[federated.medal_analysis].[none:country:nk]</rows>
+        <cols>[federated.medal_analysis].[sum:gold:qk]</cols>
+      </table>
+      <simple-id uuid='{125DA25D-7382-40F3-891E-CEF02035301D}' />
+    </worksheet>
+
+    <worksheet name='Medal Trends Across Editions'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <datasource-dependencies datasource='federated.medal_analysis'>
+            <column datatype='string' name='[season]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[year]' role='dimension' type='ordinal' />
+            <column-instance column='[season]' derivation='None' name='[none:season:nk]' pivot='key' type='nominal' />
+            <column-instance column='[total_medals]' derivation='Sum' name='[sum:total_medals:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[year]' derivation='None' name='[none:year:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.medal_analysis].[none:season:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.medal_analysis].[sum:total_medals:qk]</rows>
+        <cols>[federated.medal_analysis].[none:year:ok]</cols>
+      </table>
+      <simple-id uuid='{2E4B7C0F-C998-432A-A6D4-FC86884E6733}' />
+    </worksheet>
+
+    <worksheet name='Summer vs Winter Performance'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <datasource-dependencies datasource='federated.medal_analysis'>
+            <column datatype='string' name='[season]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+            <column-instance column='[season]' derivation='None' name='[none:season:nk]' pivot='key' type='nominal' />
+            <column-instance column='[total_medals]' derivation='Sum' name='[sum:total_medals:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.medal_analysis].[none:season:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.medal_analysis].[sum:total_medals:qk]</rows>
+        <cols>[federated.medal_analysis].[none:season:nk]</cols>
+      </table>
+      <simple-id uuid='{56EC3A09-6936-4E16-AB89-C633533A79DC}' />
+    </worksheet>
+
+    <worksheet name='Host Nation Advantage'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <datasource-dependencies datasource='federated.medal_analysis'>
+            <column datatype='integer' name='[Calculation_HostNation_Fixed]' role='dimension' type='ordinal'>
+              <calculation class='tableau' formula='IF [country] = [host_country] OR ([country] = &quot;Great Britain&quot; AND [host_country] = &quot;United Kingdom&quot;) THEN 1 ELSE 0 END' />
+            </column>
+            <column datatype='integer' name='[total_medals]' role='measure' type='quantitative' />
+            <column-instance column='[Calculation_HostNation_Fixed]' derivation='None' name='[none:Calculation_HostNation_Fixed:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[total_medals]' derivation='Sum' name='[sum:total_medals:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+          </pane>
+        </panes>
+        <rows>[federated.medal_analysis].[sum:total_medals:qk]</rows>
+        <cols>[federated.medal_analysis].[none:Calculation_HostNation_Fixed:ok]</cols>
+      </table>
+      <simple-id uuid='{F73CEFFC-175D-48EA-82B2-91FF6B334A0A}' />
+    </worksheet>
+
+    <worksheet name='Athlete Biometrics by Sport'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Athletes' name='federated.athletes' />
+          </datasources>
+          <datasource-dependencies datasource='federated.athletes'>
+            <column datatype='string' name='[Calculation_BMI_Category]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='IF [bmi] &lt; 18.5 THEN &quot;Underweight&quot; ELSEIF [bmi] &lt; 25.0 THEN &quot;Normal Weight&quot; ELSEIF [bmi] &lt; 30.0 THEN &quot;Overweight&quot; ELSE &quot;Obese&quot; END' />
+            </column>
+            <column datatype='integer' name='[height_cm]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[weight_kg]' role='measure' type='quantitative' />
+            <column-instance column='[Calculation_BMI_Category]' derivation='None' name='[none:Calculation_BMI_Category:nk]' pivot='key' type='nominal' />
+            <column-instance column='[height_cm]' derivation='Avg' name='[avg:height_cm:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[weight_kg]' derivation='Avg' name='[avg:weight_kg:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Circle' />
+            <encodings>
+              <color column='[federated.athletes].[none:Calculation_BMI_Category:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.athletes].[avg:weight_kg:qk]</rows>
+        <cols>[federated.athletes].[avg:height_cm:qk]</cols>
+      </table>
+      <simple-id uuid='{CA73DEDA-1A57-4E1F-8C69-C9E8BE27B394}' />
+    </worksheet>
+  </worksheets>
+
+  <dashboards>
+    <dashboard name='GLOBAL OLYMPIC PERFORMANCE'>
+      <style />
+      <size maxheight='900' maxwidth='1400' minheight='700' minwidth='1000' />
+      <datasources>
+        <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+      </datasources>
+      <zones>
+        <zone h='100000' id='1' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='96000' id='2' is-fixed='true' param='vert' type='layout-flow' w='98000' x='1000' y='2000'>
+            <zone h='20000' id='3' name='Olympic Overview KPIs' w='98000' x='1000' y='2000' />
+            <zone h='38000' id='4' param='horz' type='layout-flow' w='98000' x='1000' y='22000'>
+              <zone h='38000' id='5' name='Top 10 Countries by Total Medals' w='49000' x='1000' y='22000' />
+              <zone h='38000' id='6' name='Medal Distribution (Gold Silver Bronze)' w='49000' x='50000' y='22000' />
+            </zone>
+            <zone h='38000' id='7' param='horz' type='layout-flow' w='98000' x='1000' y='60000'>
+              <zone h='38000' id='8' name='Medal Trends Across Editions' w='49000' x='1000' y='60000' />
+              <zone h='38000' id='9' name='Summer vs Winter Performance' w='49000' x='50000' y='60000' />
+            </zone>
+          </zone>
+        </zone>
+      </zones>
+      <simple-id uuid='{92E346B0-459B-4E0E-B16E-5E55DBD150EF}' />
+    </dashboard>
+
+    <dashboard name='Olympic Games Performance Story' type='storyboard'>
+      <style />
+      <size maxheight='850' maxwidth='1300' minheight='700' minwidth='1000' />
+      <datasources>
+        <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+      </datasources>
+      <zones>
+        <zone h='100000' id='101' type='layout-basic' w='100000' x='0' y='0'>
+          <zone h='100000' id='102' type='flipboard' w='100000' x='0' y='0'>
+            <flipboard active-id='1' show-nav-arrows='true'>
+              <story-points>
+                <story-point caption='Scene 1: Global Olympic Overview — 6,025 Medals Across 18 Editions' captured-sheet='Olympic Overview KPIs' id='1' />
+                <story-point caption='Scene 2: Leading Nations &amp; Podium Domination (Top 10 Countries)' captured-sheet='Top 10 Countries by Total Medals' id='2' />
+                <story-point caption='Scene 3: Historical Trajectory — Medal Pool Expansion (1992–2026)' captured-sheet='Medal Trends Across Editions' id='3' />
+                <story-point caption='Scene 4: Seasonal Dynamics — Summer vs. Winter Specialization' captured-sheet='Summer vs Winter Performance' id='4' />
+              </story-points>
+            </flipboard>
+          </zone>
+        </zone>
+      </zones>
+      <simple-id uuid='{B0FB0CC7-9437-4482-8419-3720BEEDE2F1}' />
+    </dashboard>
+  </dashboards>
+
+  <windows source-height='30'>
+    <window class='worksheet' name='Olympic Overview KPIs'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{5C432421-C624-4B72-AEFD-88F890553A43}' />
+    </window>
+    <window class='worksheet' name='Top 10 Countries by Total Medals'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{DA3C518A-A2FB-4FB2-8DE8-9C29EB31CD68}' />
+    </window>
+    <window class='worksheet' name='Medal Distribution (Gold Silver Bronze)'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{55FA7BDC-EC22-4FF5-B45E-EDBB0F95E500}' />
+    </window>
+    <window class='worksheet' name='Medal Trends Across Editions'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{CAB677EE-9CE9-4083-BFD6-A39F3171A22E}' />
+    </window>
+    <window class='worksheet' name='Summer vs Winter Performance'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{19779115-750B-4B56-B0DF-55D456905130}' />
+    </window>
+    <window class='worksheet' name='Host Nation Advantage'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{5FDA1064-27E2-4C50-A850-938256FE2CCA}' />
+    </window>
+    <window class='worksheet' name='Athlete Biometrics by Sport'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{8D5E0B8F-C5EF-4356-B847-2608CE21EB31}' />
+    </window>
+    <window class='dashboard' maximized='true' name='GLOBAL OLYMPIC PERFORMANCE'>
+      <viewpoints>
+        <viewpoint name='Olympic Overview KPIs' />
+        <viewpoint name='Top 10 Countries by Total Medals' />
+        <viewpoint name='Medal Distribution (Gold Silver Bronze)' />
+        <viewpoint name='Medal Trends Across Editions' />
+        <viewpoint name='Summer vs Winter Performance' />
+      </viewpoints>
+      <active id='5' />
+      <simple-id uuid='{080794F4-2B0D-4B3A-A836-40EFE468EC54}' />
+    </window>
+    <window class='dashboard' name='Olympic Games Performance Story'>
+      <viewpoints>
+        <viewpoint name='Olympic Overview KPIs' />
+        <viewpoint name='Top 10 Countries by Total Medals' />
+        <viewpoint name='Medal Trends Across Editions' />
+        <viewpoint name='Summer vs Winter Performance' />
+      </viewpoints>
+      <active id='102' />
+      <simple-id uuid='{C8249A3A-0516-4D78-A71B-CA61D6F434D0}' />
+    </window>
+  </windows>
+</workbook>

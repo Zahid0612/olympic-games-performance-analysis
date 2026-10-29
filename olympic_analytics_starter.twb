@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<workbook source-build='2024.1.0' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AccessibleZoneTabOrder />
+    <IntuitiveSorting />
+    <MapboxVectorStylesAndLayers />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='Olympic Games and Medal Results' inline='true' name='federated.medal_analysis' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='medal_results' name='textscan.medal_results'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='medal_results.csv' password='' server='' />
+          </named-connection>
+          <named-connection caption='games_summary' name='textscan.games_summary'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='games_summary.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Country' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='string' />
+      <column caption='Host Country' name='[host_country]' role='dimension' semantic-role='[Country].[Name]' type='string' />
+      <column caption='Host City' name='[host_city]' role='dimension' semantic-role='[City].[Name]' type='string' />
+      <column caption='NOC Code' name='[noc_code]' role='dimension' type='string' />
+      <column caption='Region' name='[region]' role='dimension' type='string' />
+      <column caption='Season' name='[season]' role='dimension' type='string' />
+      <column caption='Year' name='[year]' role='dimension' type='integer' />
+      <column caption='Gold Medals' name='[gold]' role='measure' type='integer' />
+      <column caption='Silver Medals' name='[silver]' role='measure' type='integer' />
+      <column caption='Bronze Medals' name='[bronze]' role='measure' type='integer' />
+      <column caption='Total Medals' name='[total_medals]' role='measure' type='integer' />
+      <column caption='Medal Points' name='[medal_points]' role='measure' type='integer' />
+      <column caption='Medal Efficiency Pct' name='[medal_efficiency_pct]' role='measure' type='real' />
+      <column caption='Athletes Sent' name='[athletes_sent]' role='measure' type='integer' />
+      <column caption='Host Nation Flag' name='[host_nation]' role='dimension' type='integer' />
+      <column caption='Host Nation (Corrected)' name='[Calculation_HostNation_Fixed]' role='dimension' type='integer'>
+        <calculation class='tableau' formula='IF [country] = [host_country] OR ([country] = &quot;Great Britain&quot; AND [host_country] = &quot;United Kingdom&quot;) THEN 1 ELSE 0 END' />
+      </column>
+      <column caption='Games Edition' name='[Calculation_Games_Edition]' role='dimension' type='string'>
+        <calculation class='tableau' formula='[host_city] + &quot; &quot; + STR([year]) + &quot; (&quot; + [season] + &quot;)&quot;' />
+      </column>
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.5' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='%null%' />
+      </semantic-values>
+    </datasource>
+    <datasource caption='Olympic Athletes' inline='true' name='federated.athletes' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='athletes' name='textscan.athletes'>
+            <connection class='textscan' directory='c:/Users/Hp/Desktop/olympic' filename='athletes.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Athlete ID' name='[athlete_id]' role='dimension' type='string' />
+      <column caption='Name' name='[name]' role='dimension' type='string' />
+      <column caption='Country' name='[country]' role='dimension' semantic-role='[Country].[Name]' type='string' />
+      <column caption='NOC Code' name='[noc_code]' role='dimension' type='string' />
+      <column caption='Sport' name='[sport]' role='dimension' type='string' />
+      <column caption='Sport Category' name='[sport_category]' role='dimension' type='string' />
+      <column caption='Height (cm)' name='[height_cm]' role='measure' type='integer' />
+      <column caption='Weight (kg)' name='[weight_kg]' role='measure' type='integer' />
+      <column caption='BMI' name='[bmi]' role='measure' type='real' />
+      <column caption='Training Hours/Week' name='[training_hours_per_week]' role='measure' type='integer' />
+      <column caption='BMI Category' name='[Calculation_BMI_Category]' role='dimension' type='string'>
+        <calculation class='tableau' formula='IF [bmi] &lt; 18.5 THEN &quot;Underweight&quot; ELSEIF [bmi] &lt; 25.0 THEN &quot;Normal Weight&quot; ELSEIF [bmi] &lt; 30.0 THEN &quot;Overweight&quot; ELSE &quot;Obese&quot; END' />
+      </column>
+      <layout dim-ordering='alphabetic' dim-percentage='0.5' measure-ordering='alphabetic' measure-percentage='0.5' show-structure='true' />
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Sheet 1'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Olympic Games and Medal Results' name='federated.medal_analysis' />
+          </datasources>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{C22A0423-B3D5-42C4-A619-E6FFD5E5B9B9}' />
+    </worksheet>
+  </worksheets>
+  <windows saved-dpi-scale-factor='1.25' source-height='37'>
+    <window class='worksheet' maximized='true' name='Sheet 1'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{05B28236-4186-4F8C-98FF-0DE72E27CD53}' />
+    </window>
+  </windows>
+</workbook>

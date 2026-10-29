@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau Story — Olympic Games Performance Story{% endblock %}
+
+{% block content %}
+<div class="story-header-wrapper">
+    <div class="story-header-container">
+        <span class="story-pretitle">GUIDED NARRATIVE PRESENTATION</span>
+        <h1 class="story-main-title">Olympic Games Performance Story</h1>
+        <p class="story-subtitle">A 4-chapter analytical narrative tracking global dominance, historical expansion, and seasonal specialization</p>
+    </div>
+</div>
+
+<!-- Story Navigation Navigator (Tableau Story Flipboard UI) -->
+<section class="story-nav-section">
+    <div class="story-nav-container">
+        <button class="story-tab active" data-scene="1">
+            <span class="tab-step">01</span>
+            <span class="tab-label">Global Overview (1992–2026)</span>
+        </button>
+        <button class="story-tab" data-scene="2">
+            <span class="tab-step">02</span>
+            <span class="tab-label">Leading Nations & Podium Dominance</span>
+        </button>
+        <button class="story-tab" data-scene="3">
+            <span class="tab-step">03</span>
+            <span class="tab-label">Historical Trajectory & Pool Growth</span>
+        </button>
+        <button class="story-tab" data-scene="4">
+            <span class="tab-step">04</span>
+            <span class="tab-label">Summer vs. Winter Dynamics</span>
+        </button>
+    </div>
+</section>
+
+<!-- Story Scenes Container -->
+<section class="story-content-section">
+    <div class="story-container">
+        <!-- Scene 1 -->
+        <div class="story-scene-card active" id="scene-1">
+            <div class="scene-header">
+                <div class="scene-tag">Chapter 1 of 4</div>
+                <h2 class="scene-title">Global Scale: 6,025 Medals Across 18 Olympic Games</h2>
+                <div class="takeaway-box">
+                    <span class="takeaway-badge">Key Takeaway</span>
+                    <p class="takeaway-text">
+                        Between Barcelona 1992 and Milan-Cortina 2026, the modern Olympic Games hosted 18 editions (10 Summer, 8 Winter). Across 60 competing sovereign nations, 6,025 total medals were awarded—generating 11,860 weighted medal points from 47,208 sent athlete appearances.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scene-body">
+                <div class="scene-stats-row">
+                    <div class="scene-stat-pill">
+                        <span class="stat-number gold-text">1,959</span>
+                        <span class="stat-desc">Gold Medals (32.5%)</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number silver-text">1,917</span>
+                        <span class="stat-desc">Silver Medals (31.8%)</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number bronze-text">2,149</span>
+                        <span class="stat-desc">Bronze Medals (35.7%)</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number points-text">11,860</span>
+                        <span class="stat-desc">Weighted Points</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number">18</span>
+                        <span class="stat-desc">Editions (10S / 8W)</span>
+                    </div>
+                </div>
+
+                <div class="scene-visual-wrapper">
+                    <h4 class="visual-caption">Captured Worksheet: <code>Olympic Overview KPIs</code></h4>
+                    <div class="scene-chart-box">
+                        <canvas id="scene1Chart" height="120"></canvas>
+                    </div>
+                </div>
+
+                <div class="scene-notes">
+                    <h4>Tableau Model Verification:</h4>
+                    <p>
+                        Referential integrity tests verify that 18 of 18 editions in <code>games_summary.csv</code> match <code>medal_results.csv</code> with zero arithmetic variance ($1,959 + 1,917 + 2,149 = 6,025$). Logical relationship architecture eliminates the 53.65× duplication risk.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 2 -->
+        <div class="story-scene-card" id="scene-2">
+            <div class="scene-header">
+                <div class="scene-tag">Chapter 2 of 4</div>
+                <h2 class="scene-title">Leading Nations: Top 10 Countries Capture > 52% of All Medals</h2>
+                <div class="takeaway-box">
+                    <span class="takeaway-badge">Key Takeaway</span>
+                    <p class="takeaway-text">
+                        Podium success is heavily concentrated among elite sports programs. The Top 10 nations account for 3,844 of the 6,025 total medals awarded (63.8%). The United States (735 medals, 1,443 pts) and China (696 medals, 1,386 pts) lead globally, followed by Russia, Great Britain, and Germany.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scene-body">
+                <div class="scene-stats-row">
+                    <div class="scene-stat-pill">
+                        <span class="stat-number gold-text">#1 USA</span>
+                        <span class="stat-desc">735 Medals • 1,443 Pts</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number gold-text">#2 China</span>
+                        <span class="stat-desc">696 Medals • 1,386 Pts</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number silver-text">#3 Russia</span>
+                        <span class="stat-desc">429 Medals • 839 Pts</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number silver-text">#4 Great Britain</span>
+                        <span class="stat-desc">401 Medals • 779 Pts</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number bronze-text">#5 Germany</span>
+                        <span class="stat-desc">336 Medals • 671 Pts</span>
+                    </div>
+                </div>
+
+                <div class="scene-visual-wrapper">
+                    <h4 class="visual-caption">Captured Worksheet: <code>Top 10 Countries by Total Medals</code></h4>
+                    <div class="scene-chart-box">
+                        <canvas id="scene2Chart" height="130"></canvas>
+                    </div>
+                </div>
+
+                <div class="scene-notes">
+                    <h4>Analytical Insight:</h4>
+                    <p>
+                        While the United States and China dominate Summer editions, Germany, Russia, and Great Britain demonstrate consistent podium results across both Summer and Winter programs.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 3 -->
+        <div class="story-scene-card" id="scene-3">
+            <div class="scene-header">
+                <div class="scene-tag">Chapter 3 of 4</div>
+                <h2 class="scene-title">Historical Trajectory: Disciplines & Medal Pool Expansion</h2>
+                <div class="takeaway-box">
+                    <span class="takeaway-badge">Key Takeaway</span>
+                    <p class="takeaway-text">
+                        The global medal pool has steadily grown over 34 years due to new disciplines, mixed-gender relays, and expanded event schedules—rising from 329 medals in Barcelona 1992 to a peak of 363 medals in Tokyo 2020.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scene-body">
+                <div class="scene-stats-row">
+                    <div class="scene-stat-pill">
+                        <span class="stat-number">1992</span>
+                        <span class="stat-desc">329 Medals Awarded</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number points-text">2020 Peak</span>
+                        <span class="stat-desc">363 Medals Awarded</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number">334.7</span>
+                        <span class="stat-desc">Avg Medals / Edition</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number">2026 Proj</span>
+                        <span class="stat-desc">334 Medals (Milan-Cortina)</span>
+                    </div>
+                </div>
+
+                <div class="scene-visual-wrapper">
+                    <h4 class="visual-caption">Captured Worksheet: <code>Medal Trends Across Editions</code></h4>
+                    <div class="scene-chart-box">
+                        <canvas id="scene3Chart" height="120"></canvas>
+                    </div>
+                </div>
+
+                <div class="scene-notes">
+                    <h4>Host Nation Advantage Effect:</h4>
+                    <p>
+                        Host nations consistently achieve measurable performance surges during their home games (e.g., Australia in Sydney 2000, China in Beijing 2008, Great Britain in London 2012, Japan in Tokyo 2020, and France in Paris 2024). Correcting the 2012 UK host flag restores this essential historical insight.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scene 4 -->
+        <div class="story-scene-card" id="scene-4">
+            <div class="scene-header">
+                <div class="scene-tag">Chapter 4 of 4</div>
+                <h2 class="scene-title">Seasonal Specialization: Summer vs. Winter Performance Splits</h2>
+                <div class="takeaway-box">
+                    <span class="takeaway-badge">Key Takeaway</span>
+                    <p class="takeaway-text">
+                        National performance reveals acute seasonal divergence. Summer games award 3,029 medals (50.3%) across 10 editions, while Winter games award 2,996 medals (49.7%) across 8 editions. Certain nations (Norway, Austria, Canada) thrive in snow and ice, whereas tropical and equatorial nations win almost exclusively in Summer games.
+                    </p>
+                </div>
+            </div>
+
+            <div class="scene-body">
+                <div class="scene-stats-row">
+                    <div class="scene-stat-pill">
+                        <span class="stat-number gold-text">Summer: 3,029</span>
+                        <span class="stat-desc">999 Gold • 5,984 Pts</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number silver-text">Winter: 2,996</span>
+                        <span class="stat-desc">960 Gold • 5,876 Pts</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number points-text">Winter Efficiency</span>
+                        <span class="stat-desc">Norway, Germany, Canada</span>
+                    </div>
+                    <div class="scene-stat-pill">
+                        <span class="stat-number bronze-text">Summer Dominance</span>
+                        <span class="stat-desc">Kenya, Jamaica, Brazil, Cuba</span>
+                    </div>
+                </div>
+
+                <div class="scene-visual-wrapper">
+                    <h4 class="visual-caption">Captured Worksheet: <code>Summer vs Winter Performance</code></h4>
+                    <div class="scene-chart-box">
+                        <canvas id="scene4Chart" height="120"></canvas>
+                    </div>
+                </div>
+
+                <div class="scene-notes">
+                    <h4>Executive Conclusion:</h4>
+                    <p>
+                        The hybrid data model and Tableau story provide decision-makers with holistic sports governance intelligence. Full interactive drill-down is available in the Tableau Packaged Workbook (<code>olympic_analytics_final.twbx</code>).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initStory();
+    });
+</script>
+{% endblock %}

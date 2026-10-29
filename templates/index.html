@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Home — Olympic Games Performance & Medal History (1992–2026){% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-badge">
+            <span class="badge-dot"></span> 1992–2026 Historical Olympic Intelligence
+        </div>
+        <h1 class="hero-title">
+            Olympic Games Performance &<br><span class="gradient-text">Medal History Analytics</span>
+        </h1>
+        <p class="hero-subtitle">
+            An enterprise-grade analytical solution combining Tableau relational data modeling, calculated metrics remediation, interactive dashboards, narrative data storytelling, and a responsive web application.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                📊 Open Live Dashboard
+            </a>
+            <a href="{{ url_for('story') }}" class="btn btn-secondary">
+                📖 View Tableau Story
+            </a>
+            <a href="{{ url_for('download_file', filename='olympic_analytics_final.twbx') }}" class="btn btn-outline">
+                📦 Download .twbx Extract
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- KPI Cards Section -->
+<section class="kpi-section">
+    <div class="kpi-container">
+        <div class="kpi-card gold-glow">
+            <div class="kpi-icon">🥇</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Total Gold Medals</span>
+                <span class="kpi-value">{{ "{:,}".format(kpis.total_gold) }}</span>
+                <span class="kpi-subtext">32.5% of All Podium Medals</span>
+            </div>
+        </div>
+
+        <div class="kpi-card silver-glow">
+            <div class="kpi-icon">🏆</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Total Medals Awarded</span>
+                <span class="kpi-value">{{ "{:,}".format(kpis.total_medals) }}</span>
+                <span class="kpi-subtext">1,959 Gold • 1,917 Silver • 2,149 Bronze</span>
+            </div>
+        </div>
+
+        <div class="kpi-card bronze-glow">
+            <div class="kpi-icon">⚡</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Weighted Medal Points</span>
+                <span class="kpi-value">{{ "{:,}".format(kpis.total_points) }}</span>
+                <span class="kpi-subtext">Gold ×3 + Silver ×2 + Bronze ×1</span>
+            </div>
+        </div>
+
+        <div class="kpi-card blue-glow">
+            <div class="kpi-icon">🌍</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Sovereign Nations</span>
+                <span class="kpi-value">{{ kpis.total_nations }}</span>
+                <span class="kpi-subtext">100% NOC Referential Alignment</span>
+            </div>
+        </div>
+
+        <div class="kpi-card purple-glow">
+            <div class="kpi-icon">📅</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Games Editions</span>
+                <span class="kpi-value">{{ kpis.total_editions }}</span>
+                <span class="kpi-subtext">10 Summer • 8 Winter (1992–2026)</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Architecture & Highlights -->
+<section class="features-section">
+    <div class="section-header">
+        <h2 class="section-title">Core Engineering & Analytical Pillars</h2>
+        <p class="section-subtitle">Methodical implementation across data validation, Tableau authoring, and web integration</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">Zero Fan-Out Relational Model</h3>
+            <p class="feature-desc">
+                Isolates the 8,000-row athlete cohort from the 910-row country-edition fact table, preventing a catastrophic 53.65× metric inflation that a naive physical join would cause.
+            </p>
+            <ul class="feature-list">
+                <li>Logical relation: <code>medal_results</code> ↔ <code>games_summary</code></li>
+                <li>Preserves 119,120 exact total athlete headcount</li>
+                <li>Zero duplicated medal tallies</li>
+            </ul>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">⚙️</div>
+            <h3 class="feature-title">Data Preparation & Calculated Fields</h3>
+            <p class="feature-desc">
+                Remediates historical data inconsistencies in raw CSVs and injects standard international scoring models.
+            </p>
+            <ul class="feature-list">
+                <li>Host Nation 2012 UK remediation (restores 18/18 hosts)</li>
+                <li>Weighted efficiency ratio: <code>Points / Athletes Sent</code></li>
+                <li>BMI classification & career longevity tiers</li>
+            </ul>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h3 class="feature-title">Executive Dashboard & Tableau Story</h3>
+            <p class="feature-desc">
+                Complete multi-chart analytical dashboard and 4-scene narrative story guiding executive stakeholders through Olympic history.
+            </p>
+            <ul class="feature-list">
+                <li>Top 10 leaderboard & medal distribution</li>
+                <li>Edition-by-edition historical trajectories</li>
+                <li>Summer vs. Winter seasonal specialization</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- All-Time Top 10 Nations Table -->
+<section class="table-section">
+    <div class="section-header">
+        <h2 class="section-title">All-Time Olympic Leaderboard (1992–2026)</h2>
+        <p class="section-subtitle">Verified historical ranking across all 18 Olympic Games</p>
+    </div>
+
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Country / NOC</th>
+                        <th>Region</th>
+                        <th>Gold 🥇</th>
+                        <th>Silver 🥈</th>
+                        <th>Bronze 🥉</th>
+                        <th>Total Medals</th>
+                        <th>Medal Points</th>
+                        <th>Summer Medals</th>
+                        <th>Winter Medals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for country in top10 %}
+                    <tr>
+                        <td><span class="rank-badge rank-{{ loop.index }}">{{ loop.index }}</span></td>
+                        <td><strong>{{ country.country }}</strong> <span class="noc-tag">{{ country.noc_code }}</span></td>
+                        <td>{{ country.region }}</td>
+                        <td class="num gold-text">{{ country.total_gold }}</td>
+                        <td class="num silver-text">{{ country.total_silver }}</td>
+                        <td class="num bronze-text">{{ country.total_bronze }}</td>
+                        <td class="num bold-text">{{ country.total_medals }}</td>
+                        <td class="num points-text">{{ country.total_medal_points }}</td>
+                        <td class="num">{{ country.summer_medals }}</td>
+                        <td class="num">{{ country.winter_medals }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer">
+            <p>Showing Top 10 of 60 sovereign nations. Access complete filtered records in the <a href="{{ url_for('dashboard') }}">Interactive Dashboard</a>.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Olympic Editions Timeline Grid -->
+<section class="editions-section">
+    <div class="section-header">
+        <h2 class="section-title">Historical Editions Timeline (18 Games)</h2>
+        <p class="section-subtitle">Chronological record from Barcelona 1992 to Milan-Cortina 2026</p>
+    </div>
+
+    <div class="editions-grid">
+        {% for ed in editions %}
+        <div class="edition-card {% if ed.season == 'Summer' %}summer-edition{% else %}winter-edition{% endif %}">
+            <div class="edition-season-tag">{{ ed.season }}</div>
+            <div class="edition-year">{{ ed.year }}</div>
+            <div class="edition-city">{{ ed.host_city }}</div>
+            <div class="edition-country">{{ ed.host_country }}</div>
+            <div class="edition-stats">
+                <span>🏅 <strong>{{ ed.total_medals_awarded }}</strong> Medals</span>
+                <span>👥 <strong>{{ "{:,}".format(ed.total_athletes) }}</strong> Athletes</span>
+            </div>
+            <div class="edition-champion">Champion: <strong>{{ ed.top_country }}</strong></div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

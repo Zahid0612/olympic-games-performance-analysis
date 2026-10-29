@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — GLOBAL OLYMPIC PERFORMANCE{% endblock %}
+
+{% block content %}
+<div class="dashboard-header-wrapper">
+    <div class="dashboard-header-container">
+        <div class="dashboard-titles">
+            <span class="dashboard-pretitle">TABLEAU EXECUTIVE DASHBOARD</span>
+            <h1 class="dashboard-main-title">GLOBAL OLYMPIC PERFORMANCE</h1>
+            <p class="dashboard-subtitle">Multi-dimensional medal distribution, historical trajectory, and efficiency analysis (1992–2026)</p>
+        </div>
+        <div class="dashboard-actions">
+            <a href="{{ url_for('download_file', filename='olympic_analytics_final.twbx') }}" class="btn btn-primary btn-sm">
+                📦 Open in Tableau (.twbx)
+            </a>
+            <button id="toggleTableauEmbedBtn" class="btn btn-secondary btn-sm">
+                🌐 Toggle Tableau Public Embed
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Interactive Filter Bar -->
+<section class="filter-bar-section">
+    <div class="filter-container">
+        <div class="filter-group">
+            <label for="filterSeason" class="filter-label">Season:</label>
+            <select id="filterSeason" class="filter-select">
+                <option value="All">All Seasons (Summer & Winter)</option>
+                {% for season in seasons %}
+                <option value="{{ season }}">{{ season }} Games</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="filterYear" class="filter-label">Games Edition / Year:</label>
+            <select id="filterYear" class="filter-select">
+                <option value="All">All Editions (1992–2026)</option>
+                {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="filterCountry" class="filter-label">Country / NOC:</label>
+            <select id="filterCountry" class="filter-select">
+                <option value="All">All Participating Nations (60)</option>
+                {% for country in countries %}
+                <option value="{{ country }}">{{ country }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-reset">
+            <button id="resetFiltersBtn" class="btn btn-outline btn-sm">↺ Reset Filters</button>
+        </div>
+    </div>
+</section>
+
+<!-- Dynamic KPI Bar -->
+<section class="dashboard-kpis-section">
+    <div class="kpi-mini-grid">
+        <div class="kpi-mini-card">
+            <span class="mini-label">Total Medals</span>
+            <span class="mini-value" id="kpiMedals">6,025</span>
+            <span class="mini-note" id="kpiNationsCount">60 Nations</span>
+        </div>
+        <div class="kpi-mini-card">
+            <span class="mini-label">Gold Medals 🥇</span>
+            <span class="mini-value gold-text" id="kpiGold">1,959</span>
+            <span class="mini-note">Champion Podiums</span>
+        </div>
+        <div class="kpi-mini-card">
+            <span class="mini-label">Silver Medals 🥈</span>
+            <span class="mini-value silver-text" id="kpiSilver">1,917</span>
+            <span class="mini-note">Runners-Up</span>
+        </div>
+        <div class="kpi-mini-card">
+            <span class="mini-label">Bronze Medals 🥉</span>
+            <span class="mini-value bronze-text" id="kpiBronze">2,149</span>
+            <span class="mini-note">Third Place</span>
+        </div>
+        <div class="kpi-mini-card">
+            <span class="mini-label">Medal Points ⚡</span>
+            <span class="mini-value points-text" id="kpiPoints">11,860</span>
+            <span class="mini-note">Weighted (3-2-1)</span>
+        </div>
+        <div class="kpi-mini-card">
+            <span class="mini-label">Athletes Sent 👥</span>
+            <span class="mini-value" id="kpiAthletes">47,208</span>
+            <span class="mini-note">National Delegations</span>
+        </div>
+        <div class="kpi-mini-card">
+            <span class="mini-label">Efficiency Ratio 🎯</span>
+            <span class="mini-value efficiency-text" id="kpiEfficiency">0.25</span>
+            <span class="mini-note">Points per Athlete</span>
+        </div>
+    </div>
+</section>
+
+<!-- Tableau Public Online Embed Container (Collapsible) -->
+<section class="tableau-embed-section" id="tableauEmbedSection" style="display: none;">
+    <div class="embed-card">
+        <div class="embed-header">
+            <h3>Tableau Public Web Embed Integration</h3>
+            <span class="badge-tag">Tableau Server / Public Bridge</span>
+        </div>
+        <div class="embed-body">
+            {% if tableau_embed_url %}
+            <div class="tableau-placeholder" style="width: 100%; height: 750px;">
+                <iframe src="{{ tableau_embed_url }}" width="100%" height="750" frameborder="0"></iframe>
+            </div>
+            {% else %}
+            <div class="tableau-info-banner">
+                <div class="banner-icon">ℹ️</div>
+                <div class="banner-content">
+                    <h4>Tableau Public Online Publication Status</h4>
+                    <p>
+                        To display a live interactive Tableau visualization directly inside a browser iframe, Tableau workbooks must be published to <strong>Tableau Public</strong> or an on-premise <strong>Tableau Server</strong>. Local desktop <code>.twb</code> / <code>.twbx</code> files cannot be rendered by standard web browsers without an active Tableau Server or Tableau Public host.
+                    </p>
+                    <div class="publish-steps">
+                        <strong>Steps to Publish to Tableau Public:</strong>
+                        <ol>
+                            <li>Open <code>olympic_analytics_final.twbx</code> in Tableau Public 2025.2.</li>
+                            <li>Click <strong>Server</strong> → <strong>Tableau Public</strong> → <strong>Save to Tableau Public As...</strong></li>
+                            <li>Sign in with your Tableau Public account and click <strong>Save</strong>.</li>
+                            <li>Copy the resulting share URL and set the environment variable: <code>export TABLEAU_EMBED_URL="https://public.tableau.com/views/..."</code></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Live Dashboard Visualizations -->
+<section class="visualizations-grid-section">
+    <div class="viz-grid">
+        <!-- Chart 1: Top Countries by Total Medals -->
+        <div class="viz-card">
+            <div class="viz-card-header">
+                <div class="viz-title-box">
+                    <h3 class="viz-title">Top 10 Countries by Total Medals</h3>
+                    <p class="viz-subtitle">Ranked by total podium finishes with weighted medal score overlay</p>
+                </div>
+                <div class="viz-tag">Worksheet: Top 10 Countries</div>
+            </div>
+            <div class="viz-card-body">
+                <div class="chart-container">
+                    <canvas id="chartTopCountries"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 2: Medal Distribution (Gold, Silver, Bronze) -->
+        <div class="viz-card">
+            <div class="viz-card-header">
+                <div class="viz-title-box">
+                    <h3 class="viz-title">Medal Distribution Breakdown</h3>
+                    <p class="viz-subtitle">Stacked composition of Gold, Silver, and Bronze medals for top delegations</p>
+                </div>
+                <div class="viz-tag">Worksheet: Medal Distribution</div>
+            </div>
+            <div class="viz-card-body">
+                <div class="chart-container">
+                    <canvas id="chartMedalDistribution"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 3: Historical Trends Across Olympic Editions -->
+        <div class="viz-card">
+            <div class="viz-card-header">
+                <div class="viz-title-box">
+                    <h3 class="viz-title">Historical Trends Across Olympic Editions (1992–2026)</h3>
+                    <p class="viz-subtitle">Trajectory of total medals awarded and delegation volumes across 18 games</p>
+                </div>
+                <div class="viz-tag">Worksheet: Medal Trends</div>
+            </div>
+            <div class="viz-card-body">
+                <div class="chart-container">
+                    <canvas id="chartMedalTrends"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 4: Summer vs Winter Performance Dynamics -->
+        <div class="viz-card">
+            <div class="viz-card-header">
+                <div class="viz-title-box">
+                    <h3 class="viz-title">Summer vs. Winter Performance Dynamics</h3>
+                    <p class="viz-subtitle">Seasonal comparison of medal counts, points, and delegation scale</p>
+                </div>
+                <div class="viz-tag">Worksheet: Summer vs Winter</div>
+            </div>
+            <div class="viz-card-body">
+                <div class="chart-container">
+                    <canvas id="chartSeasonComparison"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initDashboard();
+    });
+</script>
+{% endblock %}

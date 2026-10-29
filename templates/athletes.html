@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Athletes — Biometrics & Athletic Profiles{% endblock %}
+
+{% block content %}
+<div class="athletes-header-wrapper">
+    <div class="athletes-header-container">
+        <span class="athletes-pretitle">DEMOGRAPHIC & BIOMETRIC DEEP-DIVE</span>
+        <h1 class="athletes-main-title">Olympic Athlete Biometrics & Profiles</h1>
+        <p class="athletes-subtitle">Physical profiles, BMI distributions, training loads, and medal achievements across 8,000 competitors</p>
+    </div>
+</div>
+
+<!-- Athlete Overview KPIs -->
+<section class="kpi-section">
+    <div class="kpi-container">
+        <div class="kpi-card blue-glow">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Analyzed Athletes</span>
+                <span class="kpi-value">{{ "{:,}".format(summary.total_athletes) }}</span>
+                <span class="kpi-subtext">{{ "{:,}".format(summary.male_count) }} Male • {{ "{:,}".format(summary.female_count) }} Female</span>
+            </div>
+        </div>
+
+        <div class="kpi-card gold-glow">
+            <div class="kpi-icon">🎂</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Average Peak Age</span>
+                <span class="kpi-value">{{ summary.avg_age }} yrs</span>
+                <span class="kpi-subtext">Career Competitive Prime</span>
+            </div>
+        </div>
+
+        <div class="kpi-card purple-glow">
+            <div class="kpi-icon">📏</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Average Height</span>
+                <span class="kpi-value">{{ summary.avg_height }} cm</span>
+                <span class="kpi-subtext">Range: 145 cm – 215 cm</span>
+            </div>
+        </div>
+
+        <div class="kpi-card silver-glow">
+            <div class="kpi-icon">⚖️</div>
+            <div class="kpi-content">
+                <span class="kpi-label">Average Weight</span>
+                <span class="kpi-value">{{ summary.avg_weight }} kg</span>
+                <span class="kpi-subtext">Mean BMI: {{ summary.avg_bmi }}</span>
+            </div>
+        </div>
+
+        <div class="kpi-card bronze-glow">
+            <div class="kpi-icon">⚡</div>
+            <div class="kpi-content">
+                <span class="kpi-label">World Record Holders</span>
+                <span class="kpi-value">{{ summary.world_records }}</span>
+                <span class="kpi-subtext">2.3% of Elite Cohort</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Athlete Biometric Charts Grid -->
+<section class="visualizations-grid-section">
+    <div class="viz-grid">
+        <div class="viz-card">
+            <div class="viz-card-header">
+                <div class="viz-title-box">
+                    <h3 class="viz-title">BMI Category Distribution</h3>
+                    <p class="viz-subtitle">Classified by WHO standards: Underweight, Normal, Overweight, Obese</p>
+                </div>
+                <div class="viz-tag">Worksheet: BMI Category</div>
+            </div>
+            <div class="viz-card-body">
+                <div class="chart-container">
+                    <canvas id="chartBmiDistribution"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="viz-card">
+            <div class="viz-card-header">
+                <div class="viz-title-box">
+                    <h3 class="viz-title">Biometrics by Sport Category</h3>
+                    <p class="viz-subtitle">Average height vs. average weight across Olympic sporting disciplines</p>
+                </div>
+                <div class="viz-tag">Worksheet: Biometrics by Sport</div>
+            </div>
+            <div class="viz-card-body">
+                <div class="chart-container">
+                    <canvas id="chartSportBiometrics"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Architectural Notice Banner -->
+<section class="banner-section">
+    <div class="notice-card">
+        <div class="notice-icon">🛡️</div>
+        <div class="notice-text">
+            <h4>Cartesian Fan-Out Avoidance Confirmation</h4>
+            <p>
+                In the Tableau architecture, <code>athletes.csv</code> is maintained as an <strong>isolated secondary data source</strong>. Because athletes represent career totals rather than single-edition rows, joining athletes to edition medal results would inflate national medal counts by <strong>53.65×</strong>. Tableau dashboard cross-filtering on <code>[country]</code> safely synchronizes views without data distortion.
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initAthletes();
+    });
+</script>
+{% endblock %}
